@@ -1,0 +1,301 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+ * Design tokens — Aljoodi brand identity (identity.pdf): Teal #0093A1, Gold #9D7747, Ink #101115, Off-white #F4F4F4.
+ * Declared inside @theme so Tailwind generates matching utilities.
+ * ------------------------------------------------------------------------ */
+@theme {
+  --color-primary: #0093a1;
+  --color-primary-hover: #007681;
+  --color-primary-dark: #005861;
+  --color-primary-soft: #99d4d9;
+  --color-primary-subtle: #e6f4f6;
+  --color-primary-tint: #cce9ec;
+  --color-primary-faint: #f2f9fa;
+  --color-primary-light: #33a9b4;
+
+  --color-accent: #9d7747;
+  --color-accent-strong: #7e5f39;
+  --color-accent-soft: #ebe4d9;
+  --color-accent-subtle: #f5f1ec;
+  --color-accent-card: #9d7747;
+  --color-accent-card-bg: #f5f1ec;
+  --color-badge-bg: #cce9ec;
+  --color-badge-text: #007681;
+  --color-lilac: #f5f1ec;
+  --color-sky: #e6f4f6;
+  --color-sky-wave: #b3dfe3;
+  --color-violet: #9d7747;
+  --color-cyan: #0093a1;
+  --color-success-strong: #22c55e;
+  --color-border-light: #f2f2f2;
+  --color-surface-input: #f9fafb;
+
+  --color-danger: #e5382b;
+  --color-danger-soft: #fde3e0;
+  --color-success: #4caf50;
+  --color-success-soft: #e3f3e4;
+  --color-warning: #f57f17;
+  --color-warning-soft: #fde5d1;
+
+  --color-background: #ffffff;
+  --color-surface: #f4f4f4;
+  --color-surface-alt: #f7f9fc;
+  --color-border: #e8edf5;
+  --color-border-strong: #d6deea;
+
+  --color-text: #1f2226;
+  --color-text-heading: #101115;
+  --color-text-muted: #5b5b5b;
+  --color-text-soft: #9ca3af;
+  --color-text-placeholder: #cbd5e1;
+
+  --font-sans: "Graphik Arabic", var(--font-cairo), system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), monospace;
+
+  --shadow-card: 0 4px 24px rgba(0, 59, 64, 0.08);
+  --shadow-soft: 0 2px 12px rgba(0, 59, 64, 0.1);
+}
+
+/* Mirrors the tokens above on :root, per the project design-system blueprint. */
+:root {
+  --color-primary: #0093a1;
+  --color-primary-hover: #007681;
+  --color-background: #ffffff;
+  --color-text: #1f2226;
+  --foreground: var(--color-text);
+  --background: var(--color-background);
+}
+
+@theme inline {
+  --color-foreground: var(--foreground);
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-text);
+}
+
+/* Halftone dot pattern used behind the mascot in banners. */
+.dots-pattern {
+  background-image: radial-gradient(circle, var(--color-primary) 1.6px, transparent 1.8px);
+  background-size: 12px 12px;
+  -webkit-mask-image: radial-gradient(circle at 0% 100%, #000 0%, #000 45%, transparent 72%);
+  mask-image: radial-gradient(circle at 0% 100%, #000 0%, #000 45%, transparent 72%);
+}
+.dots-pattern-yellow {
+  background-image: radial-gradient(circle, var(--color-accent) 1.6px, transparent 1.8px);
+  background-size: 12px 12px;
+  -webkit-mask-image: radial-gradient(circle at 100% 0%, #000 0%, #000 40%, transparent 70%);
+  mask-image: radial-gradient(circle at 100% 0%, #000 0%, #000 40%, transparent 70%);
+}
+
+/* Soft wave shape used on banners and stat cards. */
+.wave-bg {
+  background:
+    radial-gradient(120% 80% at 100% 120%, rgba(0, 147, 161, 0.16) 0%, transparent 60%),
+    radial-gradient(80% 70% at 0% 100%, rgba(255, 255, 255, 0.9) 0%, transparent 60%),
+    linear-gradient(180deg, #f2f9fa 0%, #e6f4f6 100%);
+}
+
+/* Graphik Arabic (Figma font) — the global default via --font-sans. Uses a locally installed copy when present,
+ * otherwise the licensed files in public/fonts/; until they are dropped in the stack falls back to Cairo. */
+@font-face {
+  font-family: "Graphik Arabic";
+  src: local("Graphik Arabic Regular"), local("GraphikArabic-Regular"), url("/fonts/GraphikArabic-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Graphik Arabic";
+  src: local("Graphik Arabic Medium"), local("GraphikArabic-Medium"), url("/fonts/GraphikArabic-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Graphik Arabic";
+  src: local("Graphik Arabic Semibold"), local("GraphikArabic-Semibold"), url("/fonts/GraphikArabic-Semibold.woff2") format("woff2");
+  font-weight: 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Graphik Arabic";
+  src: local("Graphik Arabic Bold"), local("GraphikArabic-Bold"), url("/fonts/GraphikArabic-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-display: swap;
+}
+
+/* Section-title keyword: teal text over a gold glow (54x38, blur 17px). */
+.marker {
+  position: relative;
+  display: inline-block;
+  color: var(--color-primary);
+  isolation: isolate;
+}
+.marker::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 54px;
+  height: 38px;
+  transform: translate(-50%, -50%);
+  border-radius: 999px;
+  background: var(--color-accent);
+  opacity: 0.35;
+  filter: blur(17px);
+  z-index: -1;
+  pointer-events: none;
+}
+/* Cyan variant of the glow (teacher courses title, Figma #29B3BB). */
+.marker-cyan::before {
+  background: var(--color-cyan);
+}
+/* Hero keyword: solid yellow marker stroke behind the word. */
+.marker-solid {
+  position: relative;
+  display: inline-block;
+  isolation: isolate;
+}
+.marker-solid::before {
+  content: "";
+  position: absolute;
+  inset: 22% -4% 10% -4%;
+  border-radius: 6px;
+  background: var(--color-accent);
+  opacity: 0.28;
+  transform: rotate(-1.5deg);
+  z-index: -1;
+}
+/* Auth hero keyword: plain gold text. */
+.marker-yellow {
+  color: var(--color-accent);
+}
+/* Decorative balloon/sparkle anchored at the end of a title line. */
+.title-sparkle {
+  display: inline-block;
+  width: 1.1em;
+  height: 1.1em;
+  margin-inline-start: 0.35em;
+  vertical-align: top;
+  background: url("/images/decor-sparkle.png") center / contain no-repeat;
+}
+/* Section typography tokens (Figma: title 32/150% bold #030000, subtitle 14/150% regular #5B5B5B). */
+.section-title {
+  font-size: 32px;
+  line-height: 1.5;
+  font-weight: 700;
+  color: var(--color-text-heading);
+}
+.section-subtitle {
+  font-size: 14px;
+  line-height: 1.5;
+  font-weight: 400;
+  color: var(--color-text-muted);
+}
+/* Section badge (teal tint / teal text, 8px 24px, radius 8px, 14px medium). */
+.section-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 24px;
+  border-radius: 8px;
+  background: var(--color-badge-bg);
+  color: var(--color-badge-text);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+/* Concentric halftone arcs (auth card corner). */
+.dots-arc {
+  background-image: repeating-radial-gradient(circle at 100% 0%, var(--color-accent) 0 3px, transparent 3px 14px);
+  -webkit-mask-image:
+    radial-gradient(circle, #000 1.6px, transparent 1.9px),
+    radial-gradient(circle at 100% 0%, #000 0%, #000 45%, transparent 75%);
+  -webkit-mask-size: 10px 10px, 100% 100%;
+  -webkit-mask-composite: source-in;
+  mask-image:
+    radial-gradient(circle, #000 1.6px, transparent 1.9px),
+    radial-gradient(circle at 100% 0%, #000 0%, #000 45%, transparent 75%);
+  mask-size: 10px 10px, 100% 100%;
+  mask-composite: intersect;
+}
+/* Faint yellow dotted matrix, no fade (teacher hero / pagination decoration). */
+.dots-matrix-yellow {
+  background-image: radial-gradient(circle, var(--color-accent) 1.5px, transparent 1.8px);
+  background-size: 14px 14px;
+  opacity: 0.6;
+}
+
+/* Legacy blue/yellow raster artwork (mascots, hero, auth, banner waves, blob, dots) shifted towards the brand
+ * teal/gold until re-rendered assets arrive. Matched by file name so no component needs to change. */
+img[src*="mascot-"],
+img[src*="auth-login"],
+img[src*="auth-register"],
+img[src*="banner-bg"],
+img[src*="banner-wave"],
+img[src*="hero-man"],
+img[src*="course-teacher"],
+img[src*="teacher-hero"] {
+  filter: hue-rotate(-28deg) saturate(0.9);
+}
+/* Small stickers (dashed arrows, dots, sparkle, sticky note, lock, mail, blob) are real brand-colour
+ * PNGs now (teal / gold), so they carry no filter. Confetti keeps a light shift only. */
+img[src*="confetti"] {
+  filter: hue-rotate(-12deg) saturate(0.55) brightness(0.85);
+}
+.brand-tint {
+  filter: hue-rotate(-28deg) saturate(0.9);
+}
+
+/* Hide scrollbar for chips rows. */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { scrollbar-width: none; }
+
+/* Decorative elements bleed outside sections; never let them create horizontal scroll. */
+html,
+body {
+  overflow-x: clip;
+}
+
+/* Header entrance + gentle floating loop for hero decorations. */
+@keyframes header-in {
+  from {
+    opacity: 0;
+    transform: translateY(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-header-in {
+  animation: header-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes float-y {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+.animate-float {
+  animation: float-y 4.5s ease-in-out infinite;
+}
+.animate-float-slow {
+  animation: float-y 6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .animate-header-in,
+  .animate-float,
+  .animate-float-slow {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
