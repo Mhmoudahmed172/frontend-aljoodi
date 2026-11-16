@@ -1,0 +1,83 @@
+/* Public-page motion only. Static layout is complete without JS or animation. */
+.aj-public :is(a, button, input, textarea, select) {
+  transition:
+    color 220ms,
+    background-color 220ms,
+    border-color 220ms,
+    opacity 220ms;
+}
+.aj-public :is(a, button, input, textarea, select):focus-visible {
+  outline: 3px solid #008d98;
+  outline-offset: 4px;
+}
+.aj-public :is(.aj-action, .aj-actionLight, .aj-actionOutline, .aj-courseCard, .aj-teacherCard) {
+  transition:
+    transform 240ms,
+    border-color 220ms,
+    background-color 220ms;
+}
+.aj-public :is(.aj-portrait, .aj-contextPhoto, .aj-coverImage, .aj-teacherEditorialPhoto) img {
+  transition: transform 280ms;
+}
+.aj-public :is(.aj-action, .aj-actionLight, .aj-actionOutline):active {
+  transform: translateY(1px);
+}
+.aj-public button[aria-expanded='true'] {
+  border-color: #008d98;
+}
+.aj-public [data-accordion-chevron] {
+  display: inline-flex;
+  flex-shrink: 0;
+  transition: transform 220ms;
+}
+.aj-public button[aria-expanded='true'] [data-accordion-chevron] {
+  transform: rotate(180deg);
+}
+.aj-public [data-filter-tabs] {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+}
+.aj-public [data-filter-tabs] button {
+  min-height: 44px;
+  border: 1px solid #d8dfe0;
+  border-radius: 6px;
+  padding: 8px 18px;
+}
+.aj-public [data-filter-tabs] button[aria-pressed='true'] {
+  border-color: #032d35;
+  background: #032d35;
+  color: #fff;
+}
+@media (hover: hover) and (pointer: fine) {
+  .aj-public :is(.aj-courseCard, .aj-teacherCard):hover {
+    transform: translateY(-4px);
+    border-color: #9ab8bc;
+  }
+  .aj-public :is(.aj-courseCard, .aj-teacherCard, .aj-contextPhoto, .aj-teacherEditorialPhoto):hover img {
+    transform: scale(1.025);
+  }
+  .aj-public :is(.aj-action, .aj-actionLight, .aj-actionOutline):hover {
+    transform: translateY(-2px);
+  }
+  .aj-public [data-filter-tabs] button:not([aria-pressed='true']):hover {
+    background: #f7f3ea;
+    border-color: #008d98;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .aj-public *,
+  .aj-public *::before,
+  .aj-public *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+  .aj-public :is(.aj-courseCard, .aj-teacherCard, .aj-action, .aj-actionLight, .aj-actionOutline):hover,
+  .aj-public :is(.aj-courseCard, .aj-teacherCard, .aj-contextPhoto, .aj-teacherEditorialPhoto):hover img {
+    transform: none;
+  }
+}

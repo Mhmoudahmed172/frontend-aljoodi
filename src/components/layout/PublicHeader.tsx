@@ -1,32 +1,33 @@
-"use client";
+'use client'
 
-import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
-import { usePathname } from "next/navigation";
-import { cn } from "@/lib/utils";
-import { useT } from "@/lib/i18n";
-import { Logo } from "@/components/ui/Logo";
-import { Button } from "@/components/ui/Button";
-import { Avatar } from "@/components/ui/Avatar";
-import { BellIcon, ChevronDownIcon, CloseIcon, ListIcon, LogoutIcon, UserIcon } from "@/components/ui/Icons";
-import { LogoutDialog } from "@/components/layout/LogoutDialog";
-import { NotificationsPopover } from "@/components/layout/NotificationsPopover";
-import { useNotifications } from "@/features/notifications/hooks/useNotifications";
-import { useSessionStatus } from "@/features/auth/hooks/useSessionStatus";
-import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
+import Link from 'next/link'
+import { useEffect, useRef, useState } from 'react'
+import { usePathname } from 'next/navigation'
+import { cn } from '@/lib/utils'
+import { useT } from '@/lib/i18n'
+import { publicStyles as styles } from '@/components/brand/publicStyles'
+import { Logo } from '@/components/ui/Logo'
+import { Button } from '@/components/ui/Button'
+import { Avatar } from '@/components/ui/Avatar'
+import { BellIcon, ChevronDownIcon, CloseIcon, ListIcon, LogoutIcon, UserIcon } from '@/components/ui/Icons'
+import { LogoutDialog } from '@/components/layout/LogoutDialog'
+import { NotificationsPopover } from '@/components/layout/NotificationsPopover'
+import { useNotifications } from '@/features/notifications/hooks/useNotifications'
+import { useSessionStatus } from '@/features/auth/hooks/useSessionStatus'
+import { useCurrentUser } from '@/features/auth/hooks/useCurrentUser'
 
 const links = [
-  { key: "nav.home", href: "/" },
-  { key: "nav.teachers", href: "/teachers" },
-  { key: "nav.subjects", href: "/subjects" },
-  { key: "nav.about", href: "/about" },
-  { key: "nav.guide", href: "/guide" },
-  { key: "nav.contact", href: "/contact" },
-];
+  { key: 'nav.home', href: '/' },
+  { key: 'nav.teachers', href: '/teachers' },
+  { key: 'nav.subjects', href: '/subjects' },
+  { key: 'nav.about', href: '/about' },
+  { key: 'nav.guide', href: '/guide' },
+  { key: 'nav.contact', href: '/contact' },
+]
 
 interface PublicHeaderProps {
-  /** Floating header laid over the landing hero gradient; shrinks into a pill on scroll. */
-  overlay?: boolean;
+  /** Retained for existing callers; public navigation uses a consistent in-flow header. */
+  overlay?: boolean
 }
 
 /**
@@ -34,150 +35,123 @@ interface PublicHeaderProps {
  * variants from the real session: cookie presence via `/api/session/status`, then the user's
  * name/avatar from `GET /auth/me`.
  */
+
 export function PublicHeader({ overlay = false }: PublicHeaderProps) {
-  const { t } = useT();
-  const { data: session } = useSessionStatus();
-  const loggedIn = session?.authenticated === true;
-  const pathname = usePathname();
-  const [open, setOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
-
-  useEffect(() => {
-    if (!overlay) return;
-
-    const onScroll = () => setScrolled(window.scrollY > 16);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-
-    return () => window.removeEventListener("scroll", onScroll);
-  }, [overlay]);
-
+  const { t } = useT()
+  const { data: session } = useSessionStatus()
+  const pathname = usePathname()
+  const [open, setOpen] = useState(false)
+  const loggedIn = session?.authenticated === true
+  const active = (href: string) => (href === '/' ? pathname === '/' : pathname.startsWith(href))
   return (
     <>
-      <header className={cn("z-40 animate-header-in", overlay ? "fixed inset-x-0 top-3 md:top-5" : "relative bg-white")}>
-        <div
-          className={cn(
-            "mx-auto flex items-center justify-between transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]",
-            overlay
-              ? cn(
-                  "h-14 w-[calc(100%-24px)] rounded-full border px-4 md:h-16 md:px-5",
-                  scrolled
-                    ? "max-w-[960px] border-white/70 bg-white/90 shadow-[0_18px_40px_-20px_rgba(0,58,140,0.35)] backdrop-blur-md"
-                    : "max-w-[1120px] border-transparent bg-transparent shadow-none",
-                )
-              : "h-16 w-full max-w-[1120px] px-5 md:h-[88px] md:px-6 xl:px-0",
-          )}
-        >
-          <Logo width={104} className="w-20 shrink-0 md:w-[104px]" />
-          <nav className="hidden items-center gap-7 md:flex xl:gap-9">
-            {links.map((l) => (
-              <Link
-                key={l.href}
-                href={l.href}
-                className={cn(
-                  "relative py-1 text-[13px] font-semibold text-text transition-colors after:absolute after:-bottom-0.5 after:start-0 after:h-0.5 after:w-0 after:rounded-full after:bg-primary after:transition-all after:duration-300 after:ease-[cubic-bezier(0.16,1,0.3,1)] hover:text-primary hover:after:w-full",
-                  isActive(l.href) && "font-bold text-primary after:w-full",
-                )}
-              >
-                {t(l.key)}
+      <header className={styles.header} data-overlay={overlay || undefined}>
+        <div className={styles.container + ' ' + styles.navbar}>
+          <Logo width={126} />
+          <nav className={styles.navigation} aria-label="التنقّل الرئيسي">
+            {links.map((link) => (
+              <Link key={link.href} href={link.href} aria-current={active(link.href) ? 'page' : undefined}>
+                {t(link.key)}
               </Link>
             ))}
           </nav>
-          <div className="hidden md:block">{loggedIn ? <UserActions /> : <LoginButton label={t("nav.login")} />}</div>
-          <button type="button" onClick={() => setOpen(true)} className="flex size-10 shrink-0 items-center justify-center text-text md:hidden" aria-label="menu">
-            <ListIcon size={24} />
+          <div className={styles.desktopActions}>{loggedIn ? <UserActions /> : <LoginButton label={t('nav.login')} />}</div>
+          <button
+            type="button"
+            className={styles.menu}
+            aria-label="فتح القائمة"
+            aria-expanded={open}
+            aria-controls="public-menu"
+            onClick={() => setOpen(true)}>
+            <ListIcon size={26} />
           </button>
         </div>
       </header>
-
-      {overlay && <div aria-hidden className="h-20 md:h-28" />}
-
       <div
-        className={cn("fixed inset-0 z-50 transition-opacity duration-300 md:hidden", open ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0")}
+        id="public-menu"
+        className={cn('fixed inset-0 z-50 lg:hidden', open ? 'pointer-events-auto' : 'pointer-events-none invisible')}
         role="dialog"
         aria-modal="true"
-        aria-hidden={!open}
-      >
-        <div className="absolute inset-0 bg-text-heading/40" onClick={() => setOpen(false)} />
-        <div
-          className={cn(
-            "absolute inset-y-0 end-0 flex w-[280px] flex-col bg-white p-5 shadow-card transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]",
-            open ? "translate-x-0" : "translate-x-full rtl:-translate-x-full",
-          )}
-        >
+        aria-label="قائمة التنقّل"
+        aria-hidden={!open}>
+        <div className="absolute inset-0 bg-black/40" onClick={() => setOpen(false)} />
+        <div className="absolute inset-y-0 end-0 flex w-[min(340px,90vw)] flex-col bg-white p-6 shadow-xl">
           <div className="flex items-center justify-between">
-            <Logo width={90} />
-            <button type="button" onClick={() => setOpen(false)} className="flex size-9 items-center justify-center rounded-full bg-surface text-text-muted" aria-label={t("common.close")}>
-              <CloseIcon size={18} />
+            <Logo width={110} />
+            <button
+              type="button"
+              onClick={() => setOpen(false)}
+              aria-label="إغلاق القائمة"
+              className="flex size-11 items-center justify-center text-primary">
+              <CloseIcon size={22} />
             </button>
           </div>
-          <nav className="mt-8 flex flex-col gap-1">
-            {links.map((l) => (
+          <nav className="mt-6 flex flex-col" aria-label="التنقّل على الهاتف">
+            {links.map((link) => (
               <Link
-                key={l.href}
-                href={l.href}
+                key={link.href}
+                href={link.href}
                 onClick={() => setOpen(false)}
-                className={cn("rounded-xl px-4 py-3 text-sm font-semibold text-text transition-colors hover:bg-primary-subtle hover:text-primary", isActive(l.href) && "bg-primary-subtle font-bold text-primary")}
-              >
-                {t(l.key)}
+                aria-current={active(link.href) ? 'page' : undefined}
+                className={cn('border-b border-border py-4 text-base text-text', active(link.href) && 'font-bold text-primary')}>
+                {t(link.key)}
               </Link>
             ))}
           </nav>
-          <div className="mt-auto">{loggedIn ? <UserActions /> : <LoginButton label={t("nav.login")} fullWidth />}</div>
+          <div className="mt-auto pt-6">{loggedIn ? <UserActions /> : <LoginButton label={t('nav.login')} fullWidth />}</div>
         </div>
       </div>
     </>
-  );
+  )
 }
 
 function LoginButton({ label, fullWidth }: { label: string; fullWidth?: boolean }) {
   return (
-    <Link href="/login" className={cn(fullWidth && "block")}>
-      <Button className="h-10 px-7 text-[13px]" fullWidth={fullWidth}>
+    <Link href="/login" className={cn(fullWidth && 'block')}>
+      <Button className="h-10 px-7 text-[13px] bg-primary text-white hover:bg-primary-hover" fullWidth={fullWidth}>
         {label}
       </Button>
     </Link>
-  );
+  )
 }
 
 function UserActions() {
-  const { t } = useT();
-  const { data: user } = useCurrentUser();
-  const name = user?.name ?? "";
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [logoutOpen, setLogoutOpen] = useState(false);
-  const [notifOpen, setNotifOpen] = useState(false);
-  const wrapRef = useRef<HTMLDivElement>(null);
-  const notifRef = useRef<HTMLDivElement>(null);
-  const { unreadCount } = useNotifications();
+  const { t } = useT()
+  const { data: user } = useCurrentUser()
+  const name = user?.name ?? ''
+  const [menuOpen, setMenuOpen] = useState(false)
+  const [logoutOpen, setLogoutOpen] = useState(false)
+  const [notifOpen, setNotifOpen] = useState(false)
+  const wrapRef = useRef<HTMLDivElement>(null)
+  const notifRef = useRef<HTMLDivElement>(null)
+  const { unreadCount } = useNotifications()
 
   // Close on outside click / Escape.
   useEffect(() => {
-    if (!menuOpen && !notifOpen) return;
+    if (!menuOpen && !notifOpen) return
     const onClick = (e: MouseEvent) => {
-      if (!wrapRef.current?.contains(e.target as Node)) setMenuOpen(false);
-      if (!notifRef.current?.contains(e.target as Node)) setNotifOpen(false);
-    };
+      if (!wrapRef.current?.contains(e.target as Node)) setMenuOpen(false)
+      if (!notifRef.current?.contains(e.target as Node)) setNotifOpen(false)
+    }
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        setMenuOpen(false);
-        setNotifOpen(false);
+      if (e.key === 'Escape') {
+        setMenuOpen(false)
+        setNotifOpen(false)
       }
-    };
-    document.addEventListener("mousedown", onClick);
-    document.addEventListener("keydown", onKey);
+    }
+    document.addEventListener('mousedown', onClick)
+    document.addEventListener('keydown', onKey)
     return () => {
-      document.removeEventListener("mousedown", onClick);
-      document.removeEventListener("keydown", onKey);
-    };
-  }, [menuOpen, notifOpen]);
+      document.removeEventListener('mousedown', onClick)
+      document.removeEventListener('keydown', onKey)
+    }
+  }, [menuOpen, notifOpen])
 
   // Logout asks for confirmation and shows a success dialog first (Figma UI-55/56) — see `LogoutDialog`.
   const handleLogout = () => {
-    setMenuOpen(false);
-    setLogoutOpen(true);
-  };
+    setMenuOpen(false)
+    setLogoutOpen(true)
+  }
 
   return (
     <div className="flex items-center gap-3">
@@ -193,10 +167,9 @@ function UserActions() {
             onClick={() => setMenuOpen((v) => !v)}
             aria-haspopup="menu"
             aria-expanded={menuOpen}
-            aria-label={t("nav.profile")}
-            className="flex size-8 items-center justify-center rounded-full text-text-muted transition hover:bg-surface"
-          >
-            <ChevronDownIcon size={14} className={cn("transition-transform", menuOpen && "rotate-180")} />
+            aria-label={t('nav.profile')}
+            className="flex size-8 items-center justify-center rounded-full text-text-muted transition hover:bg-surface">
+            <ChevronDownIcon size={14} className={cn('transition-transform', menuOpen && 'rotate-180')} />
           </button>
         </div>
         {menuOpen && (
@@ -205,20 +178,18 @@ function UserActions() {
               href="/profile"
               role="menuitem"
               onClick={() => setMenuOpen(false)}
-              className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-text transition-colors hover:bg-primary-subtle hover:text-primary"
-            >
+              className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-text transition-colors hover:bg-primary-subtle hover:text-primary">
               <UserIcon size={18} className="text-text-muted" />
-              {t("nav.profile")}
+              {t('nav.profile')}
             </Link>
             <div className="my-1 border-t border-border" />
             <button
               type="button"
               role="menuitem"
               onClick={handleLogout}
-              className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-danger transition-colors hover:bg-red-50"
-            >
+              className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-danger transition-colors hover:bg-red-50">
               <LogoutIcon size={18} />
-              {t("common.logout")}
+              {t('common.logout')}
             </button>
           </div>
         )}
@@ -227,16 +198,17 @@ function UserActions() {
         <button
           type="button"
           onClick={() => {
-            setNotifOpen((v) => !v);
-            setMenuOpen(false);
+            setNotifOpen((v) => !v)
+            setMenuOpen(false)
           }}
           className="relative flex size-10 items-center justify-center rounded-xl border border-border bg-white text-text"
-          aria-label={t("dashboard.notifications")}
-        >
+          aria-label={t('dashboard.notifications')}>
           <BellIcon size={18} />
           {unreadCount > 0 && (
-            <span className="absolute -end-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-danger px-1 text-[10px] font-bold text-white" dir="ltr">
-              {unreadCount > 99 ? "99+" : unreadCount}
+            <span
+              className="absolute -end-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-danger px-1 text-[10px] font-bold text-white"
+              dir="ltr">
+              {unreadCount > 99 ? '99+' : unreadCount}
             </span>
           )}
         </button>
@@ -244,5 +216,5 @@ function UserActions() {
       </div>
       <LogoutDialog open={logoutOpen} onClose={() => setLogoutOpen(false)} />
     </div>
-  );
+  )
 }

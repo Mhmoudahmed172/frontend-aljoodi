@@ -1,58 +1,49 @@
-"use client";
-
-import { useEffect, useRef, useState, type ReactNode } from "react";
-import { cn } from "@/lib/utils";
-
+'use client'
+import { useEffect, useRef, type ReactNode } from 'react'
+import { cn } from '@/lib/utils'
+import { enterElement } from '@/lib/motion'
 interface RevealProps {
-  children: ReactNode;
-  className?: string;
-  /** Stagger delay in ms, applied only once the element becomes visible. */
-  delay?: number;
+  children: ReactNode
+  className?: string
+  delay?: number
 }
-
-/** Fades/slides children into place the first time they scroll into view. Respects prefers-reduced-motion. */
+/** Content is visible in SSR and without JS; intersection animation is optional. */
 export function Reveal({ children, className, delay = 0 }: RevealProps) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
-
+  const ref = useRef<HTMLDivElement>(null)
   useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-
-    // Anything already inside the first viewport (e.g. the section right under the hero) must show at once,
-    // otherwise it stays transparent and leaves a blank band until the user scrolls.
-    // iOS 12.0/12.1 Safari has no IntersectionObserver; show the content rather than leaving it invisible.
-    if (el.getBoundingClientRect().top < window.innerHeight || typeof IntersectionObserver === "undefined") {
-      setVisible(true);
-
-      return;
-    }
-
+    const el = ref.current
+    if (!el || !window.matchMedia || window.matchMedia('(prefers-reduced-motion: reduce)').matches || typeof IntersectionObserver === 'undefined')
+      return
+    let animation: Animation | null = null
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          observer.disconnect();
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          observer.disconnect()
+          animation = enterElement(el, delay)
         }
       },
-      { threshold: 0, rootMargin: "0px 0px -40px 0px" },
-    );
-    observer.observe(el);
-
-    return () => observer.disconnect();
-  }, []);
-
+      { threshold: 0, rootMargin: '0px 0px -24px 0px' },
+    )
+    observer.observe(el)
+    const media = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const stop = () => {
+      if (media.matches) {
+        observer.disconnect()
+        animation?.cancel()
+      }
+    }
+    if (media.addEventListener) media.addEventListener('change', stop)
+    else media.addListener(stop)
+    return () => {
+      observer.disconnect()
+      animation?.cancel()
+      if (media.removeEventListener) media.removeEventListener('change', stop)
+      else media.removeListener(stop)
+    }
+  }, [delay])
   return (
-    <div
-      ref={ref}
-      style={{ transitionDelay: visible ? `${delay}ms` : "0ms" }}
-      className={cn(
-        "reveal transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]",
-        visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6",
-        className,
-      )}
-    >
+    <div ref={ref} className={cn('reveal', className)}>
       {children}
     </div>
-  );
+  )
 }

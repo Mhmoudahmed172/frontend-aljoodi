@@ -1,0 +1,166 @@
+/* Local photographic cover series, shared by course cards and details. */
+.aj-photoCourseCover {
+  position: relative;
+  height: 250px;
+  overflow: hidden;
+  background: #032d35;
+  color: #fff;
+  isolation: isolate;
+}
+.aj-photoCourseCover img {
+  object-fit: cover;
+  object-position: center 42%;
+  transition: transform 280ms;
+}
+.aj-photoCourseTitle {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 1;
+  padding: 46px 24px 22px;
+  background: linear-gradient(transparent, rgba(3, 45, 53, 0.94));
+  pointer-events: none;
+}
+.aj-photoCourseTitle strong {
+  display: block;
+  color: #fff;
+  font-size: 30px;
+  line-height: 1.45;
+  font-weight: 800;
+}
+.aj-photoCourseMissing {
+  display: flex;
+  min-height: 100%;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 32px 24px 90px;
+  font-size: 14px;
+  color: #d4e0e3;
+}
+.aj-homeCourseGrid .aj-photoCourseCover {
+  height: 210px;
+}
+.aj-homeCourseGrid .aj-photoCourseTitle {
+  padding-inline: 20px;
+}
+.aj-homeCourseGrid .aj-photoCourseTitle strong {
+  font-size: 27px;
+}
+.aj-courseIntro .aj-photoCourseCover {
+  height: 380px;
+  border-radius: 10px;
+}
+.aj-courseIntro .aj-photoCourseTitle strong {
+  font-size: 36px;
+}
+/* The summit appears once, in the existing homepage closing position. */
+.aj-summit {
+  padding: 24px 0 64px;
+  background: #f7f3ea;
+}
+.aj-summitInner {
+  position: relative;
+  min-height: 460px;
+  display: flex;
+  align-items: center;
+  background: #032d35;
+  isolation: isolate;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.aj-summitScene {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+}
+.aj-summitScene img {
+  object-fit: cover;
+  object-position: 40% 35%;
+}
+.aj-summitInner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(270deg, rgba(3, 45, 53, 0.9), rgba(3, 45, 53, 0.4) 42%, transparent 72%);
+  pointer-events: none;
+}
+.aj-summitCopy {
+  width: 48%;
+  padding: 48px;
+  color: #fff;
+}
+.aj-summitCopy h2 {
+  color: #fff;
+  font-size: clamp(32px, 4vw, 52px);
+  line-height: 1.55;
+  font-weight: 800;
+  margin: 0;
+}
+.aj-summitCopy h2 span {
+  color: #d5b575;
+}
+.aj-summitCopy p {
+  color: #e1ebed;
+  font-size: 18px;
+  line-height: 1.9;
+  margin: 18px 0 28px;
+}
+.aj-summitCopy .aj-actionLight {
+  background: #f7f3ea;
+  color: #032d35;
+}
+@media (hover: hover) and (pointer: fine) {
+  .aj-public .aj-courseCard:hover .aj-photoCourseCover img {
+    transform: scale(1.025);
+  }
+}
+@media (max-width: 850px) {
+  .aj-summitCopy {
+    width: 56%;
+    padding: 32px;
+  }
+  .aj-summitInner {
+    min-height: 420px;
+  }
+}
+@media (max-width: 600px) {
+  .aj-courseIntro .aj-photoCourseCover {
+    height: 280px;
+  }
+  .aj-summit {
+    padding-bottom: 40px;
+  }
+  .aj-summitInner {
+    min-height: 550px;
+    align-items: flex-end;
+  }
+  .aj-summitScene {
+    bottom: auto;
+    height: 320px;
+  }
+  .aj-summitScene img {
+    object-position: 28% 35%;
+  }
+  .aj-summitInner::after {
+    background: linear-gradient(0deg, #032d35 30%, rgba(3, 45, 53, 0.85) 44%, transparent 75%);
+  }
+  .aj-summitCopy {
+    width: 100%;
+    padding: 240px 24px 28px;
+  }
+  .aj-summitCopy h2 {
+    font-size: 34px;
+  }
+  .aj-summitCopy p {
+    font-size: 16px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .aj-photoCourseCover img {
+    transition: none;
+  }
+  .aj-public .aj-courseCard:hover .aj-photoCourseCover img {
+    transform: none;
+  }
+}

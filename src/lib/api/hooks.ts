@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient, type QueryKey, type UseMutationO
 import type { FieldValues, UseFormSetError } from 'react-hook-form'
 import { toast } from 'sonner'
 import { api } from './client'
+import { LOCAL_PREVIEW, getPreviewFixture } from '@/lib/preview/catalog'
 import { ApiError, toApiError } from './errors'
 import { applyServerErrors } from './form-errors'
 import type { RequestOptions } from './client'
@@ -35,8 +36,11 @@ export const useApiQuery = <T>(
 ) => {
   const cleanParams = params ? Object.fromEntries(Object.entries(params).filter(([, v]) => v !== undefined && v !== null && v !== '')) : undefined
   return useQuery<T, ApiError>({
-    queryKey: cleanParams ? [...key, cleanParams] : key,
-    queryFn: ({ signal }) => client.get<T>(path, { params: cleanParams, signal }),
+    queryKey: [...key, ...(cleanParams ? [cleanParams] : []), ...(LOCAL_PREVIEW ? ['local-preview'] : [])],
+    queryFn: ({ signal }) => {
+      const fixture = LOCAL_PREVIEW && client === api ? getPreviewFixture(path, cleanParams) : undefined
+      return fixture !== undefined ? Promise.resolve(fixture as T) : client.get<T>(path, { params: cleanParams, signal })
+    },
     ...options,
   })
 }
@@ -93,7 +97,7 @@ export const useApiMutation = <TInput = void, TOutput = unknown>(
     onError: (error, input) => {
       const applied = setError ? applyServerErrors(setError as UseFormSetError<FieldValues>, error.errors) : 0
       if (errMsg !== false) {
-        const message = applied > 0 ? FALLBACK_MESSAGES.validation : errMsg ?? errorMessage(error)
+        const message = applied > 0 ? FALLBACK_MESSAGES.validation : (errMsg ?? errorMessage(error))
         toast.error(message)
       }
       onError?.(error, input)
