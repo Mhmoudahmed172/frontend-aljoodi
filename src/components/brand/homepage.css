@@ -1,0 +1,263 @@
+/* Homepage-only art direction. Existing public routes keep their own compositions. */
+.aj-home {
+  --home-ivory: #f7eee3;
+}
+.aj-home .aj-hero {
+  background: var(--home-ivory);
+  color: var(--color-primary);
+  padding: 48px 0 56px;
+}
+.aj-home .aj-heroGrid {
+  grid-template-columns: minmax(0, 0.88fr) minmax(0, 1.22fr);
+  gap: 32px;
+}
+.aj-home .aj-heroCopy {
+  padding: 12px 0;
+}
+.aj-home .aj-heroTitle {
+  color: var(--color-primary);
+  font-size: clamp(36px, 4vw, 56px);
+  line-height: 1.5;
+}
+.aj-home .aj-heroTitle em {
+  color: #b08022;
+}
+.aj-home .aj-hero .aj-eyebrow {
+  color: var(--color-rich-petrol);
+}
+.aj-home .aj-hero .aj-lead {
+  color: var(--color-text);
+  max-width: 510px;
+}
+.aj-home .aj-hero .aj-actionLight {
+  background: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+}
+.aj-home .aj-hero .aj-actionLight:hover {
+  background: var(--color-rich-petrol);
+  border-color: var(--color-rich-petrol);
+}
+.aj-home .aj-hero .aj-actionOutline {
+  background: transparent;
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+.aj-home .aj-hero .aj-actionOutline:hover {
+  background: white;
+}
+.aj-home .aj-heroEnsemble {
+  width: 100%;
+  height: auto;
+  margin: 0;
+  aspect-ratio: auto;
+  background: transparent;
+  box-shadow: none;
+  filter: none;
+}
+.aj-home .aj-heroCompositeFrame {
+  position: static;
+  display: block;
+}
+.aj-home .aj-heroComposite {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  max-height: none;
+  object-fit: contain;
+  border-radius: 0;
+  box-shadow: none;
+  filter: none;
+}
+.aj-home .aj-homeTeachers {
+  background: #032d35;
+  color: white;
+  padding-block: 64px 72px;
+}
+.aj-homeTeachers .aj-title {
+  color: white;
+}
+.aj-homeTeachers .aj-eyebrow {
+  color: #d5b575;
+}
+.aj-homeTeachers .aj-lead {
+  color: #d4e0e3;
+  max-width: 600px;
+  margin-top: 16px;
+}
+.aj-homeTeachersHead {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 36px;
+  align-items: end;
+}
+.aj-homeTeachersHead .aj-actions {
+  justify-content: flex-end;
+  margin-top: 0;
+}
+.aj-homeTeachers .aj-actionOutline {
+  color: white;
+  border-color: #91adb3;
+}
+.aj-homeTeachers .aj-actionOutline:hover {
+  background: #075560;
+}
+.aj-homeFaculty {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin: 40px 0 0;
+  padding-bottom: 0;
+}
+.aj-homeFacultyPortrait {
+  min-width: 0;
+  position: relative;
+  aspect-ratio: 4/5;
+  background: #08313d;
+  overflow: hidden;
+  border-radius: 6px;
+}
+.aj-homeFacultyPortrait img {
+  object-fit: cover;
+  object-position: center 15%;
+  filter: contrast(1.02) saturate(0.94);
+}
+.aj-homeCoursesHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 24px;
+}
+.aj-homeCoursesHead .aj-title {
+  font-size: clamp(28px, 3vw, 40px);
+}
+.aj-homeCoursesHead .aj-eyebrow {
+  margin-bottom: 8px;
+}
+.aj-homeCourseFilters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 24px 0 28px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #dce4e5;
+}
+.aj-homeCourseFilters button {
+  min-height: 44px;
+  padding: 8px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  color: #243e46;
+}
+.aj-homeCourseFilters button[aria-pressed='true'] {
+  background: #032d35;
+  border-color: #032d35;
+  color: white;
+}
+.aj-homeCourseFilters button:hover {
+  border-color: #075560;
+}
+.aj-homeCourseGrid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+}
+.aj-homeCourseGrid .aj-courseCard {
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+}
+.aj-homeCourseGrid .aj-courseCardBody {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+.aj-homeCourseGrid .aj-courseKicker {
+  font-size: 12px;
+}
+.aj-homeCourseGrid .aj-courseName {
+  font-size: 19px;
+  line-height: 1.65;
+  margin-block: 8px 12px;
+}
+.aj-homeCourseGrid .aj-courseTeacher {
+  font-size: 14px;
+  margin-top: 0;
+  min-height: 0;
+}
+.aj-homeCourseScope {
+  font-size: 13px;
+  color: #52666d;
+  line-height: 1.8;
+  margin-block: 12px 20px;
+}
+.aj-homeCourseGrid .aj-courseFooter {
+  margin-top: auto;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.aj-homeCourseGrid .aj-price {
+  font-size: 23px;
+}
+.aj-homeCourseGrid .aj-textLink {
+  font-size: 13px;
+}
+@media (max-width: 1100px) {
+  .aj-homeCourseGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .aj-homeTeachersHead {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+  .aj-homeTeachersHead .aj-actions {
+    justify-content: flex-start;
+  }
+}
+@media (max-width: 850px) {
+  .aj-home .aj-heroGrid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+  .aj-home .aj-hero {
+    padding-block: 28px 36px;
+  }
+  .aj-home .aj-heroEnsemble {
+    max-width: 600px;
+    margin-inline: auto;
+  }
+  .aj-homeCoursesHead {
+    align-items: start;
+  }
+}
+@media (max-width: 600px) {
+  .aj-home .aj-heroTitle {
+    font-size: clamp(30px, 7.5vw, 40px);
+  }
+  .aj-homeFaculty {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 28px;
+    padding-bottom: 0;
+  }
+  .aj-homeCoursesHead {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .aj-homeCourseGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .aj-home .aj-homeTeachers {
+    padding-block: 40px 48px;
+  }
+}
+@supports not (aspect-ratio: 4/5) {
+  .aj-homeFacultyPortrait {
+    height: 0;
+    padding-bottom: 125%;
+    border-radius: 6px;
+  }
+}

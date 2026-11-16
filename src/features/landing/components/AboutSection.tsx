@@ -1,44 +1,73 @@
-"use client";
-
-import Image from "next/image";
-import { useT } from "@/lib/i18n";
-import { EyeIcon, TargetIcon } from "@/components/ui/Icons";
-
-/** "About Aljoodi" section: overlapping classroom photos, intro text, vision and mission. */
+import Image from 'next/image'
+import { demoImages } from '@/lib/preview/catalog'
+import { portraits } from '../portraits'
+import { publicStyles as styles } from '@/components/brand/publicStyles'
 export function AboutSection() {
-  const { t } = useT();
-  const items = [
-    { icon: <EyeIcon size={22} />, title: t("about.vision"), text: t("about.visionText") },
-    { icon: <TargetIcon size={22} />, title: t("about.mission"), text: t("about.visionText") },
-  ];
   return (
-    <section className="flex flex-col gap-12">
-      <div className="grid items-center gap-10 md:grid-cols-2">
-        <div className="flex flex-col items-start gap-4">
-          <h2 className="section-title">
-            {t("about.aboutTitle1")} <span className="marker">{t("about.aboutHighlight")}</span>
-          </h2>
-          <p className="text-base leading-[1.5] text-text-muted">{t("about.aboutText")}</p>
-        </div>
-        <div className="relative mx-auto h-[340px] w-full max-w-[420px]">
-          <span className="pointer-events-none absolute -top-6 start-1/2 size-9 rounded-full bg-primary-soft" />
-          <span className="pointer-events-none absolute start-[60%] top-0 size-3 rounded-full bg-primary-soft" />
-          <span className="dots-matrix-yellow pointer-events-none absolute -bottom-4 -end-4 size-32 rounded-full" aria-hidden />
-          <Image src="/images/classroom-1.jpg" alt="" width={368} height={368} className="absolute end-0 top-0 h-[260px] w-[72%] rounded-2xl object-cover shadow-card" />
-          <Image src="/images/classroom-2.jpg" alt="" width={368} height={244} className="absolute bottom-0 start-0 h-[180px] w-[60%] rounded-2xl border-4 border-white object-cover shadow-card" />
-        </div>
-      </div>
-      <div className="grid gap-10 md:grid-cols-2">
-        {items.map((item) => (
-          <div key={item.title} className="flex items-start gap-4">
-            <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-primary text-white">{item.icon}</span>
-            <div>
-              <h3 className="text-lg font-bold text-text-heading">{item.title}</h3>
-              <p className="mt-1 text-sm leading-[1.5] text-text-muted">{item.text}</p>
-            </div>
+    <section className={styles.section}>
+      <div className={styles.container}>
+        <div className={styles.story}>
+          <div>
+            <span className={styles.eyebrow}>ليش الجودي؟</span>
+            <h2 className={styles.title}>
+              تجربة تعليم
+              <br />
+              بتحترم جهدك.
+            </h2>
           </div>
-        ))}
+          <div>
+            <p>
+              التوجيهي إله مكان كبير بحياتك، وكل يوم دراسة بتحطّ فيه من وقتك وجهدك. في الجودي، بنبدأ من احتياجك: معلومة بدها توضيح، سؤال بدّه تطبيق،
+              أو موضوع بدك ترجع تراجعه.
+            </p>
+            <p>
+              من ملفات المدرّسين لتفاصيل الدورات، بنجمع المعلومات اللي بتحتاجها لاتخاذ قرارك. اختار المادة المناسبة، تصفّح محتواها، وراجع خيارات
+              الاشتراك بدون ما تضيع بين صفحات متفرقة.
+            </p>
+            <p>
+              <strong>معك… حتى القمة.</strong> طموح بنشتغل عليه، بفهم وتدريب ومراجعة.
+            </p>
+          </div>
+        </div>
+        <div className={styles.editorialGrid}>
+          <figure className={styles.contextPhoto}>
+            <Image src={demoImages.teaching} alt="مشهد تعليمي توضيحي لشرح مسألة هندسية" fill sizes="(min-width:768px) 600px,100vw" />
+            <figcaption>من الفكرة للتطبيق · مشهد تعليمي توضيحي</figcaption>
+          </figure>
+          <div>
+            <span className={styles.eyebrow}>التعلّم اللي بتشارك فيه</span>
+            <h2 className={styles.title}>
+              اسأل عن السبب.
+              <br />
+              وجرّب الحل بنفسك.
+            </h2>
+            <p className={styles.lead}>
+              المثال المحلول بيساعدك تشوف طريقة التفكير. خذ وقتك مع السؤال، راجع الشرح اللي احتجته، وجرّب تطبيق الفكرة على مسألة ثانية.
+            </p>
+          </div>
+        </div>
+        <div className={styles.teamStrip}>
+          {portraits.map((src) => (
+            <div className={styles.portrait} key={src}>
+              <Image src={src} alt="صورة مقدّمة من فريق الجودي" fill sizes="(min-width:768px) 290px,45vw" />
+            </div>
+          ))}
+        </div>
+        <div className={styles.teamCaption}>
+          <span>من فريق الجودي التعليمي</span>
+          <span>المعلّم، والمحتوى، والتطبيق.</span>
+        </div>
+        <div className={styles.principles}>
+          <div>
+            <h3>اختار البداية المناسبة إلك</h3>
+            <p>اقرأ وصف الدورة، راجع وحداتها، وتعرّف على طريقة المعلّم قبل ما تختار.</p>
+          </div>
+          <div>
+            <h3>راجع بتركيز وكمّل بوضوح</h3>
+            <p>الوحدات والدروس والاختبارات والمرفقات المتاحة بتعطيك مسار ترجع إله، وتكمّل منه وقت ما تحتاج.</p>
+          </div>
+        </div>
       </div>
     </section>
-  );
+  )
 }

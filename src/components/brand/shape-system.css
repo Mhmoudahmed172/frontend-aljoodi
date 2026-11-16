@@ -1,0 +1,222 @@
+/* Shared public shapes: book-like curves, precise controls, sculpted feature photography. */
+.aj-public,
+.aj-auth {
+  --aj-radius-control: 12px;
+  --aj-radius-card: 22px;
+  --aj-radius-feature: 64px 20px 64px 20px;
+  --aj-radius-pill: 999px;
+  --aj-feedback: 220ms;
+  --aj-ease: cubic-bezier(0.2, 0.65, 0.25, 1);
+  --aj-shadow-rest: 0 6px 24px rgb(3 45 53 / 6%);
+  --aj-shadow-raised: 0 16px 36px rgb(3 45 53 / 14%);
+}
+:is(.aj-public, .aj-auth) :is([data-ui-button], [data-ui-field]) {
+  border-radius: var(--aj-radius-control);
+}
+:is(.aj-public, .aj-auth) :is([data-ui-button], [data-ui-field], .aj-action, .aj-actionLight, .aj-actionOutline) {
+  transition:
+    background-color var(--aj-feedback),
+    color var(--aj-feedback),
+    border-color var(--aj-feedback),
+    box-shadow var(--aj-feedback),
+    transform var(--aj-feedback) var(--aj-ease);
+}
+:is(.aj-public, .aj-auth) [data-ui-button] {
+  min-height: 44px;
+}
+:is(.aj-public, .aj-auth) [data-ui-field]:focus {
+  box-shadow: 0 0 0 3px rgb(0 141 152 / 13%);
+}
+:is(.aj-public, .aj-auth) :is(.aj-action, .aj-actionLight, .aj-actionOutline) {
+  border-radius: var(--aj-radius-control);
+}
+:is(.aj-public, .aj-auth) :is(a, button, input, textarea, select):focus-visible {
+  outline: 3px solid var(--color-teal);
+  outline-offset: 4px;
+}
+.aj-public .aj-courseCard {
+  border-radius: var(--aj-radius-card);
+  overflow: hidden;
+  border-color: rgb(3 45 53 / 7%);
+  box-shadow: var(--aj-shadow-rest);
+  transition:
+    transform 260ms var(--aj-ease),
+    box-shadow 260ms,
+    border-color var(--aj-feedback);
+}
+.aj-public .aj-courseCard > a {
+  display: block;
+}
+.aj-public .aj-courseCard .aj-photoCourseCover {
+  border-radius: 0;
+}
+.aj-public .aj-courseCard:focus-within {
+  outline: 2px solid var(--color-teal);
+  outline-offset: 4px;
+  box-shadow: var(--aj-shadow-raised);
+}
+.aj-public :is(.aj-courseIntro .aj-photoCourseCover, .aj-contextPhoto, .aj-supportPhoto) {
+  border-radius: var(--aj-radius-feature);
+}
+.aj-public .aj-editorialGrid .aj-contextPhoto {
+  box-shadow: 12px 16px 0 var(--color-ivory);
+}
+.aj-public .aj-teacherFeatured {
+  border-radius: var(--aj-radius-card);
+  box-shadow: var(--aj-shadow-rest);
+  border-color: rgb(3 45 53 / 7%);
+}
+.aj-home .aj-homeFacultyPortrait {
+  border-radius: 38% 38% 14px 14px;
+}
+.aj-public .aj-profilePhoto {
+  border-radius: 38% 38% 20px 20px;
+  box-shadow: var(--aj-shadow-rest);
+}
+.aj-auth .aj-authPhoto {
+  border-radius: var(--aj-radius-feature);
+}
+.aj-auth .aj-authPanel {
+  border-radius: var(--aj-radius-card);
+  box-shadow: var(--aj-shadow-rest);
+}
+.aj-public :is(.aj-packages, .aj-platform) {
+  border-radius: var(--aj-radius-card);
+  box-shadow: var(--aj-shadow-rest);
+}
+.aj-public .aj-packages {
+  border-color: rgb(3 45 53 / 8%);
+}
+.aj-public :is([data-filter-tabs] button, .aj-homeCourseFilters button) {
+  border-radius: var(--aj-radius-pill);
+  min-height: 44px;
+}
+.aj-home {
+  background: #fff;
+}
+/* Two quiet section turns; the supplied hero artwork receives no additional frame or mask. */
+.aj-home .aj-homeTeachers {
+  border-end-start-radius: 88px;
+}
+.aj-home .aj-homeCourses {
+  padding-bottom: 48px;
+}
+.aj-home .aj-summit {
+  border-start-start-radius: 72px;
+  padding-top: 40px;
+}
+.aj-home .aj-summitInner {
+  border-radius: var(--aj-radius-feature);
+}
+.aj-public [data-action-arrow] {
+  display: inline-block;
+  flex-shrink: 0;
+  transition: transform var(--aj-feedback) var(--aj-ease);
+}
+.aj-public :is(a, button):focus-visible [data-action-arrow] {
+  transform: translateX(-4px);
+}
+/* Underline grows from the RTL start edge without moving the navigation text. */
+.aj-public .aj-navigation a {
+  position: relative;
+  border-bottom-color: transparent;
+}
+.aj-public .aj-navigation a::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  bottom: 2px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--color-teal);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform var(--aj-feedback) var(--aj-ease);
+}
+.aj-public .aj-navigation a:is([aria-current='page'], :hover, :focus-visible)::after {
+  transform: scaleX(1);
+}
+/* Panels remain mounted so both directions can expand smoothly. Collapsed panels are inert. */
+.aj-accordionPanel {
+  display: grid;
+  grid-template-rows: 0fr;
+  visibility: hidden;
+}
+.aj-accordionPanel[data-open='true'] {
+  grid-template-rows: 1fr;
+  visibility: visible;
+}
+.aj-accordionClip {
+  min-height: 0;
+  overflow: hidden;
+}
+.aj-public .aj-accordionPanel {
+  opacity: 0.4;
+  transition:
+    grid-template-rows 260ms var(--aj-ease),
+    opacity 180ms,
+    visibility 0s linear 260ms;
+}
+.aj-public .aj-accordionPanel[data-open='true'] {
+  opacity: 1;
+  transition:
+    grid-template-rows 260ms var(--aj-ease),
+    opacity 180ms,
+    visibility 0s;
+}
+.aj-public [data-accordion-body] {
+  animation: none;
+}
+.aj-public [data-accordion-chevron] {
+  transition: transform var(--aj-feedback) var(--aj-ease);
+}
+@media (hover: hover) and (pointer: fine) {
+  .aj-public .aj-courseCard:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--aj-shadow-raised);
+    border-color: rgb(3 45 53 / 10%);
+  }
+  .aj-public .aj-courseCard:hover .aj-photoCourseCover img {
+    transform: scale(1.03);
+  }
+  .aj-public :is(a, button):hover [data-action-arrow] {
+    transform: translateX(-4px);
+  }
+  .aj-public :is(.aj-action, .aj-actionLight, .aj-actionOutline, [data-ui-button]):hover {
+    box-shadow: 0 6px 16px rgb(3 45 53 / 12%);
+  }
+}
+@media (max-width: 600px) {
+  .aj-public,
+  .aj-auth {
+    --aj-radius-feature: 36px 16px 36px 16px;
+  }
+  .aj-home .aj-homeTeachers {
+    border-end-start-radius: 44px;
+  }
+  .aj-home .aj-summit {
+    border-start-start-radius: 40px;
+    padding-top: 24px;
+  }
+  .aj-home .aj-homeCourses {
+    padding-bottom: 32px;
+  }
+  .aj-public .aj-editorialGrid .aj-contextPhoto {
+    box-shadow: 8px 10px 0 var(--color-ivory);
+  }
+  .aj-home .aj-homeFacultyPortrait {
+    border-radius: 38% 38% 12px 12px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  :is(.aj-public, .aj-auth) *,
+  :is(.aj-public, .aj-auth) *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+  .aj-public .aj-courseCard:hover,
+  .aj-public .aj-courseCard:hover .aj-photoCourseCover img,
+  .aj-public :is(a, button):is(:hover, :focus-visible) [data-action-arrow] {
+    transform: none;
+  }
+}

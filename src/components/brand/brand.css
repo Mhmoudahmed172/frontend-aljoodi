@@ -1,0 +1,38 @@
+/* Thin shared compatibility layer. Public compositions live in public.css. */
+.brand-reading {
+  background: #f7f3ea;
+  color: #243e46;
+}
+.brand-dashboard {
+  background: #f7f3ea;
+}
+.brand-preview-note {
+  background: #f0f3f2;
+  color: #52666d;
+  padding: 8px 20px;
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.7;
+  border-bottom: 1px solid #dce4e5;
+}
+.brand-profile-placeholder {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  min-height: 180px;
+  align-items: center;
+  justify-content: center;
+  background: #eef2f2;
+  color: #52666d;
+  font-size: 15px;
+  padding: 24px;
+  text-align: center;
+}
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid #008d98;
+  outline-offset: 4px;
+}
